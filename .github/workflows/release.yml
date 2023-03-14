@@ -13,20 +13,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install CLI
+        uses: actions/setup-cli@v1
 
-      - name: Upload asset
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          # upload all files
-          file: ./*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+      - name: Create Release
+      run: |
+          gh release create ${{ github.ref }} -t "Release ${{ github.ref }}"
+        # uses: ncipollo/release-action@v1
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Assets
+        run: |
+          gh release upload ${{ github.ref }} *
+      # - name: Upload asset
+      #   uses: svenstaro/upload-release-action@v2
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     # upload all files
+      #     file: ./*
+      #     tag: ${{ github.ref }}
+      #     overwrite: true
+      #     file_glob: true
 
 ### Test Usage ###
 # First finish git commit
