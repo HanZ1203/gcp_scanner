@@ -17,13 +17,13 @@ jobs:
 
       - name: Create Release
         run: |
-          gh release create ${{ github.ref }} -t "Release ${{ github.ref }}"
+          gh release create ${{ github.ref }} -t "Release ${{ github.ref }}" --draft=false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # upload all files
       - name: Upload Assets
-        run: gh release upload ${{ github.ref }} ./* --draft=false
+        run: gh release upload ${{ github.ref }} ./* 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
