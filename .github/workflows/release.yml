@@ -17,11 +17,33 @@ jobs:
 
       - name: Create Release
         run: |
-          gh release create ${{ github.ref }} ./*
+          gh release create ${{ github.ref }} 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+    - name: Get latest commit hash
+        id: get_commit
+        run: echo "::set-output name=commit::$(git rev-parse HEAD)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Get changed files
+        id: get_files
+        run: |
+          files=$(git diff-tree --no-commit-id --name-only -r ${{ steps.get_commit.outputs.commit }})
+          echo "::set-output name=files::$files"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # # upload all files
+      - name: Upload release assets
+        run: |
+          files=$(echo ${{ steps.get_files.outputs.files }})
+          for file in $files; do
+            gh release upload ${{ github.ref }} "$file" 
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
       # - name: Upload Assets
       #   run: gh release upload ${{ github.ref }} ./* 
       #   env:
