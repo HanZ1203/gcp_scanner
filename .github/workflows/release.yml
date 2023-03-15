@@ -17,14 +17,14 @@ jobs:
 
       - name: Create Release
         run: |
-          gh release create ${{ github.ref }} 
+          gh release create ${{ github.ref }} ${{ github.workspace }}/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
-      - name: Upload Assets
-        run: gh release upload ${{ github.ref }} ${{ github.workspace }}/README.md --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Upload Assets
+      #   run: gh release upload ${{ github.ref }} ${{ github.workspace }}/README.md --clobber
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 ### Test Usage ###
 # First finish git commit
