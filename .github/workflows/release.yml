@@ -17,7 +17,7 @@ jobs:
 
       - name: Create Release
         run: |
-          gh release create ${{ github.ref }} 
+          gh release create ${{ github.ref#refs/tags/ }} 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
@@ -45,7 +45,7 @@ jobs:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Upload Assets
-        run: gh release upload ${{ github.ref }} ${{ github.workspace }}/* --clobber
+        run: gh release upload ${{ github.ref#refs/tags/ }} ${{ github.workspace }}/* --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
